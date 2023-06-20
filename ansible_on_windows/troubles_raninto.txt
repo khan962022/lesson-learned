@@ -1,3 +1,6 @@
+On the controller side it was good follow these steps in this doc
+  https://docs.ansible.com/ansible/latest/reference_appendices/python_3_support.html#on-the-controller-side
+
 Here is the brief story i had spend on running ansible on Windows
 First you need to have a linux machine as a controller, controller cannot be any other machine
 Need to have WINRM and its listeners configured on this system
