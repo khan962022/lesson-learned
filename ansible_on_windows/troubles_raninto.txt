@@ -1,3 +1,28 @@
 Here is the brief story i had spend on running ansible on Windows
 First you need to have a linux machine as a controller, controller cannot be any other machine
 Need to have WINRM and its listeners configured on this system
+
+Fist i used ansible docs to install winrm and configure it 
+https://docs.ansible.com/ansible/latest/os_guide/windows_setup.html# 
+Clearly instruction given here doesnt work when it comes to azure vms , as it has many firewall features and many other stuff was keep getting timeout 
+and not reachable error when i tried ping into this module
+https://www.youtube.com/watch?v=73pgFXLYrfk&t=132s , this youtube helped a little when it came to configuring hosts file
+
+Despite going through many docs like
+  https://learn.microsoft.com/en-us/samples/azure/azure-quickstart-templates/vm-winrm-windows/
+  https://learn.microsoft.com/en-us/azure/virtual-machines/create-fqdn
+  https://www.koskila.net/winrm-complaining-error-invalid-use-of-command-line-easy-fix/
+  https://learn.microsoft.com/en-us/azure/virtual-machines/windows/connect-winrm
+  
+None of the above links and it info didnt help as it was azure vm, despite generating self signed certificates , adding inbound rules insdide the OS.
+I was still not able to configure to the listener on HTTPS on port 5896. despite going through step by step docs from
+  https://www.microsoft.com/en-gb/industry/blog/technetuk/2016/02/11/configuring-winrm-over-https-to-enable-powershell-remoting/
+  https://learn.microsoft.com/en-us/troubleshoot/windows-client/system-management-components/configure-winrm-for-https
+  https://docs.ansible.com/ansible/latest/os_guide/windows_setup.html#
+
+So the Best and easiet way to configure a windows az vm for ansible is:
+    1. Install a custom script extension and use the script 
+      https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+    2. this will automatically install and configure winrm for the machine , no need to do all the certificates and all that stuff
+    3. Use only this document like to create
+      https://learn.microsoft.com/en-us/azure/developer/ansible/vm-configure-windows?tabs=ansible
