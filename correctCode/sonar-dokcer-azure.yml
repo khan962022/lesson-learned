@@ -42,16 +42,17 @@ stages:
         projectKey: 'devopsprojects-khan_dockerdevops'
         projectName: 'dockerdevops'
         extraProperties: |
-          sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
+          sonar.cs.opencover.reportsPaths='$(System.DefaultWorkingDirectory)/**/test/coverage.cobertura.xml'
   
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: build
-        projects: '**/*.csproj'
+        projects: '**/sqlapp.csproj'
         arguments: '--configuration $(buildConfiguration)'
 
     - task: DotNetCoreCLI@2
+      displayName: Publish
       inputs:
         command: publish
         publishWebProjects: True
@@ -59,18 +60,19 @@ stages:
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
     - task: DotNetCoreCLI@2
+      displayName: Running tests
       inputs:
         command: 'test' 
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
+        projects: '**/test.csproj'
+        arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
         nobuild: false
         publishTestResults: true
     
     - task: PublishCodeCoverageResults@1
-      displayName: 'Publish code coverage report'
+      displayName: 'Cobertura'
       inputs:
         codeCoverageTool: 'Cobertura'
-        summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/test/coverage.cobertura.xml'
 
     - task: SonarCloudAnalyze@1
       displayName: 'Run Sonar Analysis'
