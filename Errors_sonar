@@ -1,0 +1,27 @@
+Starting: DotNetCoreCLI
+==============================================================================
+Task         : .NET Core
+Description  : Build, test, package, or publish a dotnet application, or run a custom dotnet command
+Version      : 2.221.0
+Author       : Microsoft Corporation
+Help         : https://docs.microsoft.com/azure/devops/pipelines/tasks/build/dotnet-core-cli
+==============================================================================
+Info: .NET Core SDK/runtime 2.2 and 3.0 are now End of Life(EOL) and have been removed from all hosted agents. If you're using these SDK/runtimes on hosted agents, kindly upgrade to newer versions which are not EOL, or else use UseDotNet task to install the required version.
+/opt/hostedtoolcache/dotnet/dotnet test /home/vsts/work/1/s/sqlapp/sqlapp.csproj --logger trx --results-directory /home/vsts/work/_temp --configuration Release --collect:XPlat Code Coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover
+  Determining projects to restore...
+  Restored /home/vsts/work/1/s/sqlapp/sqlapp.csproj (in 332 ms).
+##[warning]No test result files were found.
+Info: Azure Pipelines hosted agents have been updated and now contain .Net 5.x SDK/Runtime along with the older .Net Core version which are currently lts. Unless you have locked down a SDK version for your project(s), 5.x SDK might be picked up which might have breaking behavior as compared to previous versions. You can learn more about the breaking changes here: https://docs.microsoft.com/en-us/dotnet/core/tools/ and https://docs.microsoft.com/en-us/dotnet/core/compatibility/ . To learn about more such changes and troubleshoot, refer here: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops#troubleshooting
+Finishing: DotNetCoreCLI
+
+
+Starting: Publish code coverage report
+==============================================================================
+Task         : Publish code coverage results
+Description  : Publish Cobertura or JaCoCo code coverage results from a build
+Version      : 1.219.0
+Author       : Microsoft Corporation
+Help         : https://docs.microsoft.com/azure/devops/pipelines/tasks/test/publish-code-coverage-results
+==============================================================================
+##[warning]No code coverage results were found to publish.
+Finishing: Publish code coverage report
