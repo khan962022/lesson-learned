@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "SQLLogin": {
+            "type": "string",
+            "metadata": {
+                "description": "Login Administrator"
+            }
+        },
+        "Password": {
+            "type": "secureString",
+            "metadata": {
+                "description": "Password"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+                                "name": "srvdb8892635",
+                                "type": "Microsoft.Sql/servers",
+                                "apiVersion": "2014-04-01",
+                                "location": "[resourceGroup().location]",
+                                "tags": {
+                                    "displayName": "srvdb8892635"
+                                },
+                                "properties": {
+                                    "administratorLogin": "[parameters('SQLLogin')]",
+                                    "administratorLoginPassword": "[parameters('Password')]"
+                                }
+                            },
+                            {
+                                "name": "srvdb8892635/appdb88",
+                                "type": "Microsoft.Sql/servers/databases",
+                                "apiVersion": "2014-04-01",
+                                "location": "[resourceGroup().location]",  
+                                "dependsOn": [
+                                    "[resourceId('Microsoft.Sql/servers', 'srvdb8892635')]"
+                                ],
+                                "properties": {
+                                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                                        "edition": "Basic",
+                                        "maxSizeBytes": "1073741824",
+                                        "requestedServiceObjectiveName": "Basic"
+                                }
+                            }
+    ],
+    "outputs": {}
+}
