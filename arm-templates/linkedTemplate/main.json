@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "plan8892635909",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-12-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F1",
+                "capacity": 1
+            },
+            "properties": {
+                "name": "plan8892635909"
+            }
+        },
+        {
+            "name": "app8892635909",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms','plan8892635909')]"
+            ],
+            "properties": {
+                "name": "app8892635909",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms','plan8892635909')]"
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "LinkedTemplate",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://sg1002.blob.core.windows.net/template/db_srv.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri": "https://sg1002.blob.core.windows.net/template/parameters.json",
+                    "contentVersion": "1.0.0.0"
+                }
+                
+            }
+        }
+    ],
+    "outputs": {}
+}
