@@ -52,6 +52,11 @@
                 "10.0.0.0/16"
             ]
         },
+        "bastionSubnetIpPrefix": {
+            "value": [
+                "10.0.1.0/27"
+            ]
+        },
         "subnets": {
             "value": [
                 {
@@ -103,7 +108,7 @@
         },
         "subnetAddressPrefix":
         {
-            "value": "10.0.1.0/27"
+            "value": "10.0.0.0/24"
         }
     }
 }
