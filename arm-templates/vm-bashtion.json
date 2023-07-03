@@ -122,13 +122,9 @@
             "location": "[parameters('location')]",
             "properties": {
               "addressSpace": {
-                "addressPrefixes": [
-                  "[parameters('addressPrefixes')]"
-                ]
+                "addressPrefixes": "[parameters('addressPrefixes')]"
               },
-              "subnets": [
-                "[parameters('bastionsubnets')]"
-              ]
+              "subnets": "[parameters('bastionsubnets')]"
             }
           },
           {
@@ -138,13 +134,9 @@
             "location": "[parameters('location')]",
             "properties": {
               "addressSpace": {
-                "addressPrefixes": [
-                  "[parameters('addressPrefixes')]"
-                ]
+                "addressPrefixes": "[parameters('addressPrefixes')]"
               },
-              "subnets": [
-                "[parameters('subnets')]"
-              ]
+              "subnets": "[parameters('subnets')]"
             }
           },
         {
