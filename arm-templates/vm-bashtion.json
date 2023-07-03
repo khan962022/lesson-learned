@@ -17,7 +17,7 @@
         "subnetName": {
             "type": "String"
         },
-        "bastionSubnetIpPrefix":{
+        "bastionsubnets": {
             "type": "Array"
         },
         "virtualNetworkName": {
@@ -127,12 +127,7 @@
                 ]
               },
               "subnets": [
-                {
-                  "name": "AzureBastionSubnet",
-                  "properties": {
-                    "addressPrefix": "[parameters('bastionSubnetIpPrefix')]"
-                  }
-                }
+                "[parameters('bastionsubnets')]"
               ]
             }
           },
