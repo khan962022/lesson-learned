@@ -17,9 +17,6 @@
         "subnetName": {
             "type": "String"
         },
-        "bastionsubnets": {
-            "type": "Array"
-        },
         "virtualNetworkName": {
             "type": "String"
         },
@@ -104,46 +101,37 @@
             }
         },
         {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2022-07-01",
-            "name": "bashtionip",
-            "location": "[parameters('location')]",
-            "properties": {
-              "publicIPAllocationMethod": "Static"
-            },
-            "sku": {
-              "name": "Standard"
-            }
-          },
-        {
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2022-07-01",
+            "apiVersion": "2021-01-01",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[parameters('location')]",
             "properties": {
-              "addressSpace": {
-                "addressPrefixes": "[parameters('addressPrefixes')]"
-              },
-              "subnets": "[parameters('bastionsubnets')]"
+                "addressSpace": {
+                    "addressPrefixes": "[parameters('addressPrefixes')]"
+                },
+                "subnets": "[parameters('subnets')]"
             }
-          },
-          {
-            "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2022-07-01",
-            "name": "Default",
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-05-01",
+            "name": "bashtionIp",
             "location": "[parameters('location')]",
+            "sku": {
+              "name": "Standard"
+            },
             "properties": {
-              "addressSpace": {
-                "addressPrefixes": "[parameters('addressPrefixes')]"
-              },
-              "subnets": "[parameters('subnets')]"
+              "publicIPAllocationMethod": "Static"
             }
           },
         {
             "type": "Microsoft.Network/bastionHosts",
             "apiVersion": "2020-05-01",
-            "name": "vnetBastion",
+            "name": "webBastion",
             "location": "[parameters('location')]",
+            "sku": {
+                "name": "Basic"
+            },
             "properties": {
               "ipConfigurations": [
                 {
@@ -153,15 +141,15 @@
                       "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('bastionSubnetName'))]"
                     },
                     "publicIPAddress": {
-                      "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'bashtionip')]"
+                      "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'bashtionIp')]"
                     }
                   }
                 }
               ]
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('bastionSubnetName'))]",
-                "[resourceId('Microsoft.Network/publicIPAddresses', 'bashtionip')]"
+              "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+              "[resourceId('Microsoft.Network/publicIPAddresses', 'bashtionIp')]"
             ]
         },
         {
@@ -202,7 +190,7 @@
                 "priority": "Spot",
                 "evictionPolicy": "Deallocate",
                 "billingProfile": {
-                    "maxPrice": 0.025
+                    "maxPrice": 0.02
                 },
                 "securityProfile": {
                     "securityType": "[parameters('securityType')]",
@@ -219,5 +207,5 @@
             }
         }
     ],
-    "outputs": { }
+    "outputs": {}
 }
