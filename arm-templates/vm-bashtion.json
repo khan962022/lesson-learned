@@ -18,10 +18,7 @@
             "type": "String"
         },
         "bastionSubnetIpPrefix":{
-            "type": "array"
-        },
-        "subnetAddressPrefix":{
-            "type": "array"
+            "type": "Array"
         },
         "virtualNetworkName": {
             "type": "String"
@@ -151,12 +148,7 @@
                 ]
               },
               "subnets": [
-                {
-                  "name": "Default",
-                  "properties": {
-                    "addressPrefix": "[parameters('subnetAddressPrefix')]"
-                  }
-                }
+                "[parameters('subnets')]"
               ]
             }
           },
