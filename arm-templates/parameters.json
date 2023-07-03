@@ -67,6 +67,16 @@
                 }
             ]
         },
+        "bastionsubnets": {
+            "value": [
+                {
+                    "name": "AzureBastionSubnet",
+                    "properties": {
+                        "addressPrefix": "10.0.1.0/27"
+                    }
+                }
+            ]
+        },
         "virtualMachineName": {
             "value": "web03"
         },
