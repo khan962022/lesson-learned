@@ -1,0 +1,98 @@
+Windows PowerShell is case insensitive
+
+Cmd + .net +C# = Windows PowerShell
+	• Cmdlets: Verb-Noun
+	• Native commands work!
+		○ Ex: Ping, IPConfig, calc, notepad, mspaing
+	•  cls - Clear-Host
+	•  cd - Set-Location
+	•  dir, ls - Get-Childitem
+	•  type, cat - Get-Content
+	• Copy , cp - Copy-Item
+
+Get-Alias
+	• Gets Aliases of the commands and their shortcuts
+	• Get-Alias g* (will list all the comdlets starts with g)
+
+Get-Help
+	• Really important command , helps you understanding the commands
+	• Upate the help in your system
+		○ Udpate-help
+	• You can use help , get-help and man command to get help
+		○ Try get-help g*/ get-help *service*
+	• Another interesting command is 
+		○ Get-verb - this will list all the verbs that you can use
+	• Get-help get-service -Detalied will give detailed information about it including examples on how to use
+		○ You can also try Get-help get-service -Full (this will give even more details about that command)
+		○ You can go even further by using get-help get-service -online
+		○ Try get-help get-service -examples (this will give you a list of examples)
+		○ Get-help get-service -showWindow
+	• Sample exercide
+		○ I need to get the newest 5 errors out of my event logs
+			§ Get-help *event log*
+			§ Get-eventlog -Loganme system -Newest 3 -entrytype error
+		
+
+17-06-2023
+PIPELINE IN POWERSHELL
+
+	• Get-service | export-csv -Path C:\service.csv
+		○ This will create a csv file in that path 
+		○ Similarly you can also create improt-csv path
+		○ ALSO try Get-Service | Export-clixml -Path H:\servicexml.xml 
+	• Get-Process | Add-Content H:\test.txt
+		○ This will add content to this pirticular file
+	• Get-Service | out-file H:\test.txt 
+		○ This will create a file and update it with the information in Get-service command
+	• Get-serivice | convertTo -csv -Property name,status
+		○ This will help in using in pipline forward
+	• Get-Service|ConvertTo-html -Property name,status |out-file testhtml.html
+		○ To run this htlml just run testhtml.html
+	• Get-Service | Stop-Service -whatif 
+		○ This is very important command -whatif (it will tell you whats its going to do but will not do it)
+		○  -confirm 
+			§ This will actually ask you every step of the way do you want to do this or not
+			§ Get-Service b* | Stop-Service -Confirm
+Objects:
+Objects have properties and Methods
+
+To show all the properties and methods an object has 
+	• Get-service -name bits | gm
+		○ TypeName: System.ServiceProcess.ServiceController
+	• get-process | where Handles -gt 900
+		○ get-process | where Handles -gt 900 | sort  handles
+	• Get-Service | Select -Property name,status
+		○ Very important and uesful
+		○ Get-ChildItem |select Length,Name p 
+		○ Get-ChildItem |select Length,Name | sort -Property length -Descending
+		○ Get-Service b* | select -Property Name,DisplayName
+
+	• Get-Service | where {$_.status -eq "Running"}  is same as Get-Service | where {$PSitem.status -eq "Running"}
+	• Very imporant for filtering and selection (gps | where {$_.handles -ge 1000})
+		○ Assign the object to the $_
+		○ Evaluate the code with operators 
+		○ If if evaluates pass the object on
+		○ ps | sort handles | where {$_.handles -eq 854}
+
+18-07-2023
+DEEP DIVE IN PIPELINES
+	• Example. How does get-service|stop-service work 
+		○ Here you need to check what kind of object is get-service 
+			§ In this case it’s a serviceController object
+		○ Then you need to check with help command what kind of inputs can we give to stop-service
+			§ Here by checking I came to know that we can give 
+				□ ServiceControlller kind of objects and 
+				□ String 
+	• get-service| select -Property name, @{n='ComptuerName';e={$_.name} }
+		○ @{n='ComptuerName';e={$_.name} } this a hash object 
+		
+	• get-service| where{$_.name -eq 'ALG'}
+		○ Get-Wmiobject -class -ComputerName (Get-AdComputer - filter *|select -expandProperty name)
+			§ Get-Wmiobject -class -ComputerName (Get-AdComputer - filter *).name (same as above)
+			§ Get-Adcomputer -fitler * | get-wmiObject win32_bios -ComputerName{$_.name} (here the {$_.name will store the previous pipeline result}
+			§ Here the WMIobject doesn’t accept pipline objects
+				□ Only accepts ComputerName, Classs etc
+					® So you convert the object Computer AD using  Expand Property
+
+PowerShell Remoting
+	• 
