@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        
+    },
+    "functions": [],
+    "variables": {
+        "plan-name":"[concat('plan',uniqueString(resourceGroup().id))]",
+        "app-name":"[concat('app',uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('plan-name')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-12-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F1",
+                "capacity": 1
+            },
+            "properties": {
+                "name": "[variables('plan-name')]"
+            }
+        },
+        {
+            "name": "[variables('app-name')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms',variables('plan-name'))]"
+            ],
+            "properties": {
+                "name": "[variables('app-name')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms',variables('plan-name'))]"
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "LinkedTemplate",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://templates1002.blob.core.windows.net/templates/db_sql.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri": "https://templates1002.blob.core.windows.net/templates/params.json",
+                    "contentVersion": "1.0.0.0"
+                }
+                
+            }
+        }
+    ],
+    "outputs": {
+        "webappName":{
+            "type":"string",
+            "value":"[variables('app-name')]"
+        },
+        "sqlserverfqdn":{
+            "type":"string",
+            "value":"[reference('LinkedTemplate').outputs.sqlfqdn.value]"
+        }
+    }
+}

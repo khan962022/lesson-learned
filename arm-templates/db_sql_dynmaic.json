@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "SQLLogin": {
+            "type": "string",
+            "metadata": {
+                "description": "Login Administrator"
+            }
+        },
+        "Password": {
+            "type": "secureString",
+            "metadata": {
+                "description": "Password"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "sql-srv-name":"[concat('server',uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+                                "name": "[variables('sql-srv-name')]",
+                                "type": "Microsoft.Sql/servers",
+                                "apiVersion": "2014-04-01",
+                                "location": "[resourceGroup().location]",
+                                "tags": {
+                                    "displayName": "[variables('sql-srv-name')]"
+                                },
+                                "properties": {
+                                    "administratorLogin": "[parameters('SQLLogin')]",
+                                    "administratorLoginPassword": "[parameters('Password')]"
+                                }
+                            },
+                            {
+                                "name": "[format('{0}/{1}',variables('sql-srv-name'),'appdb')]",
+                                "type": "Microsoft.Sql/servers/databases",
+                                "apiVersion": "2014-04-01",
+                                "location": "[resourceGroup().location]",  
+                                "dependsOn": [
+                                    "[resourceId('Microsoft.Sql/servers', variables('sql-srv-name'))]"
+                                ],
+                                "properties": {
+                                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                                        "edition": "Basic",
+                                        "maxSizeBytes": "1073741824",
+                                        "requestedServiceObjectiveName": "Basic"
+                                }
+                            }
+    ],
+    "outputs": {
+        "sqlfqdn":{
+            "type":"string",
+            "value":"[reference(variables('sql-srv-name')).fullyQualifiedDomainName]"
+        }
+    }
+}
