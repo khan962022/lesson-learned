@@ -1,0 +1,105 @@
+dotnet pack .\CoreService.csproj instead of ./nuget.exe pack .\CoreService.csproj as the latter is a legacy solution
+
+and to Publish use 
+.\nuget.exe push -Source "CoreService" -ApiKey core 'C:\New folder\CoreService\CoreService\bin\Debug\CoreService.1.0.0.nupkg'
+
+Erroes that i got
+PS C:\New folder\CoreService\CoreService> dotnet push -Source "CoreService" -ApiKey core CoreService.1.0.0.nupkg
+Could not execute because the specified command or file was not found.
+Possible reasons for this include:
+  * You misspelled a built-in dotnet command.
+  * You intended to execute a .NET program, but dotnet-push does not exist.
+  * You intended to run a global tool, but a dotnet-prefixed executable with this name could not be found on the PATH.
+PS C:\New folder\CoreService\CoreService> nuget.exe push -Source "CoreService" -ApiKey core CoreService.1.0.0.nupkg
+nuget.exe : The term 'nuget.exe' is not recognized as the name of a cmdlet, function, script file, or operable
+program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ nuget.exe push -Source "CoreService" -ApiKey core CoreService.1.0.0.n ...
++ ~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (nuget.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+
+Suggestion [3,General]: The command nuget.exe was not found, but does exist in the current location. Windows PowerShell does not load commands from the current location by default. If you trust this command, instead type: ".\nuget.exe". See "get-help about_Command_Precedence" for more details.
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" -ApiKey core CoreService.1.0.0.nupkg
+MSBuild auto-detection: using msbuild version '17.6.3.22601' from 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin'.
+    [CredentialProvider]Using the ADAL UI  flow for uri https://pkgs.dev.azure.com/nnna31894/SQL_APP_PIPELINE_RELEASE/_packaging/CoreService/nuget/v3/index.json. User sign-in required in a pop-up authentication window.
+    [CredentialProvider]VstsCredentialProvider - Acquired bearer token using 'ADAL UI'
+    [CredentialProvider]VstsCredentialProvider - Attempting to exchange the bearer token for an Azure DevOps session token.
+File does not exist (CoreService.1.0.0.nupkg).
+PS C:\New folder\CoreService\CoreService> .\nuget.exe pack .\CoreService.csproj
+Attempting to build package from 'CoreService.csproj'.
+MSBuild auto-detection: using msbuild version '17.6.3.22601' from 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin'.
+Packing files from 'C:\New folder\CoreService\CoreService\bin\Debug\net6.0'.
+Error NU5049: The `pack` command for SDK-style projects is not supported, use `dotnet pack` or `msbuild -t:pack` to pack this project instead. You can override this behavior by setting the 'NUGET_ENABLE_LEGACY_CSPROJ_PACK' environment variable to 'true'.
+Error NU5000: Failed to build package. C:\New folder\CoreService\CoreService\CoreService.csproj
+PS C:\New folder\CoreService\CoreService> dotnet pack .\CoreService.csproj
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CoreService -> C:\New folder\CoreService\CoreService\bin\Debug\net6.0\CoreService.dll
+
+PS C:\New folder\CoreService\CoreService> dotnet pack .\CoreService.csproj -recursive
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+MSBUILD : error MSB1001: Unknown switch.
+    Full command line: 'C:\Program Files\dotnet\sdk\7.0.302\MSBuild.dll -maxcpucount -verbosity:m -restore -target:pack --property:_IsPacking=true .\CoreService.csproj -recursive -distributedlogger:Microsoft.DotNet.Tools.MSBuild.MSBuildLogger,C:\Program Files\dotnet\sdk\7.0.302\dotnet.dll*Microsoft.DotNet.Tools.MSBuild.MSBuildForwardingLogger,C:\Program Files\dotnet\sdk\7.0.302\dotnet.dll'
+  Switches appended by response files:
+Switch: -recursive
+
+For switch syntax, type "MSBuild -help"
+PS C:\New folder\CoreService\CoreService> dotnet pack .\CoreService.csproj
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CoreService -> C:\New folder\CoreService\CoreService\bin\Debug\net6.0\CoreService.dll
+PS C:\New folder\CoreService\CoreService> dotnet pack .\CoreService.csproj
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CoreService -> C:\New folder\CoreService\CoreService\bin\Debug\net6.0\CoreService.dll
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" -ApiKey core CoreService.1.0.0.nupkg
+File does not exist (CoreService.1.0.0.nupkg).
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" -ApiKey core .\CoreService\CoreService\\bin\Debug\CoreService.1.0.0.nupkg
+Could not find a part of the path 'C:\New folder\CoreService\CoreService\CoreService\CoreService\bin\Debug'.
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" -ApiKey core .\CoreService\CoreService\\bin\Debug\CoreService.1.0.0.nupkg                                .\nuget.exe push -Source "CoreService" -ApiKey core C:\New folder\CoreService\CoreService\bin\Debug\CoreService.1.0.0.nupkg
+File does not exist (C:\New).
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" -ApiKey core CoreService.1.0.0.nupkg
+File does not exist (CoreService.1.0.0.nupkg).
+
+PS C:\New folder\CoreService\CoreService> dotntet pack .\CoreService.csproj
+dotntet : The term 'dotntet' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the
+name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ dotntet pack .\CoreService.csproj
++ ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (dotntet:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\New folder\CoreService\CoreService>
+PS C:\New folder\CoreService\CoreService> dotnet pack .\CoreService.csproj
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CoreService -> C:\New folder\CoreService\CoreService\bin\Debug\net6.0\CoreService.dll
+PS C:\New folder\CoreService\CoreService> dotnet pack .\CoreService.csproj
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CoreService -> C:\New folder\CoreService\CoreService\bin\Debug\net6.0\CoreService.dll
+  The package CoreService.1.0.0 is missing a readme. Go to https://aka.ms/nuget/authoring-best-practices/readme to learn why package readmes ar
+  e important.
+  Successfully created package 'C:\New folder\CoreService\CoreService\bin\Debug\CoreService.1.0.0.nupkg'.
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" 'C:\New folder\CoreService\CoreService\bin\Debug\CoreService.1.0.0.nupkg'
+WARNING: No API Key was provided and no API Key could be found for 'https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/'. To save an API Key for a source use the 'setApiKey' command.
+Pushing CoreService.1.0.0.nupkg to 'https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/'...
+  PUT https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/
+MSBuild auto-detection: using msbuild version '17.6.3.22601' from 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin'.
+  BadRequest https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/ 1297ms
+Response status code does not indicate success: 400 (Bad Request - The request to the server did not include the header X-NuGet-ApiKey, but it is required even though credentials were provided. If using NuGet.exe, use the -ApiKey option to set this to an arbitrary value, for example "-ApiKey AzureDevOps" (DevOps Activity ID: E0E3C714-9EB2-40FB-80C0-D9995C51B793)).
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" 'C:\New folder\CoreService\CoreService\bin\Debug\CoreService.1.0.0.nupkg'^C
+PS C:\New folder\CoreService\CoreService> .\nuget.exe push -Source "CoreService" -ApiKey core 'C:\New folder\CoreService\CoreService\bin\Debug\CoreService.1.0.0.nupkg'
+Pushing CoreService.1.0.0.nupkg to 'https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/'...
+  PUT https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/
+MSBuild auto-detection: using msbuild version '17.6.3.22601' from 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin'.
+  Accepted https://pkgs.dev.azure.com/nnna31894/6e291996-6073-4709-bb2e-059236c5203c/_packaging/a9c8ee85-cd92-41b1-b364-2e7415673b37/nuget/v2/ 4174ms
+Your package was pushed.
