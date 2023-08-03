@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "SQLLogin": {
+            "value": "khan"
+        },
+        "Password": {
+            "reference" :{
+                "keyVault":{
+                    "id": "/subscriptions/3ced201d-91ed-4013-9caf-8bc963affbba/resourceGroups/test-grp/providers/Microsoft.KeyVault/vaults/vault565",
+                    "secretName" : "dbpassword"
+                }
+            }
+        }
+    }
+}
