@@ -1,0 +1,10 @@
+2023-12-18T06:23:15.6307662Z ##[section]Starting: VSBuild
+2023-12-18T06:23:15.6312046Z ==============================================================================
+2023-12-18T06:23:15.6312178Z Task         : Visual Studio build
+2023-12-18T06:23:15.6312244Z Description  : Build with MSBuild and set the Visual Studio version property
+2023-12-18T06:23:15.6312366Z Version      : 1.231.0
+2023-12-18T06:23:15.6312420Z Author       : Microsoft Corporation
+2023-12-18T06:23:15.6312495Z Help         : https://docs.microsoft.com/azure/devops/pipelines/tasks/build/visual-studio-build
+2023-12-18T06:23:15.6312597Z ==============================================================================
+2023-12-18T06:23:15.6451192Z ##[error]The current operating system is not capable of running this task. That typically means the task was written for Windows only. For example, written for Windows Desktop PowerShell.
+2023-12-18T06:23:15.6468953Z ##[section]Finishing: VSBuild
